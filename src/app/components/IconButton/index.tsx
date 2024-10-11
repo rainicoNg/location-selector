@@ -9,7 +9,7 @@ interface IIconButtonProps {
 }
 
 export default function IconButton({...props}: IIconButtonProps) {
-    return (
+  return (
     <button
       onClick={props.onClick}
       disabled={props.disabled}
