@@ -1,14 +1,25 @@
 "use client";
 
 import {useState, useEffect} from "react";
+import axios from "axios";
 import LocationInput from "./components/LocationInput";
 import ActionButton from "./components/ActionButton";
+import ResultContainer from "./components/ResultContainer";
 
-interface locationItem {
-  index: number;
-  location: string;
+export interface IPathDetails {
+  status: "none" | "in-progress" | "success" |  "error";
+  message: string;
+  path?: string[][];
+  totalDistance?: number;
+  totalTime?: number;
 }
-function LocationInputList() {
+
+function LocationInputForm() {
+  interface locationItem {
+    index: number;
+    location: string;
+  }
+
   const [locations, useLocations] = useState<locationItem[]>([
     {
       index: 0,
@@ -19,38 +30,49 @@ function LocationInputList() {
       location: ""
     }
   ]);
+  /* TODO: remove if no use
   const [newLocationAddable, useNewLocationAddable] = useState(false);
+  */
+  const [locationCanSubmit, useLocationCanSubmit] = useState(false);
+  const [pathData, usePathData] = useState<IPathDetails>({
+    status: "none",
+    message: "Sumbit your pick up and drop off locations"
+  });
 
   useEffect(() => {
-    setNewLocationAddable();
-  }, [locations]);
+    setLocationCanSubmit();
+  }, [locations, pathData.status]);
 
+  function setLocationCanSubmit() {
+    useLocationCanSubmit(locations.every((item) => item.location.trim() !== "") && pathData.status !== "in-progress");
+  }
+
+  /* TODO: remove if no use
   function setNewLocationAddable() {
     useNewLocationAddable(
       locations.length < 5 &&
         locations.every((item) => item.location.trim() !== "")
     );
   }
+  */
 
   function handleLocationChange(
-    {index}: {index: number},
-    {input}: {input: React.ChangeEvent<HTMLInputElement>}
+    index: number,
+    input: React.ChangeEvent<HTMLInputElement>
   ) {
     const updatedLocations = [...locations];
     updatedLocations[index].location = input.target.value;
     useLocations(updatedLocations);
   }
 
-  function handleLocationDelete({index}: {index: number}) {
-    useLocations(
-      [...locations.filter((_, i) => i !== index)].map((item, i) => ({
-        index: i,
-        location: item.location
-      }))
-    );
+  function handleLocationDelete(index: number) {
+    const updatedLocations = [...locations];
+    updatedLocations[index].location = "";
+    useLocations(updatedLocations);
   }
 
-  function handleAddLocation() {
+  /* TODO: remove if no use
+  function handleLocationAdd() {
     if (locations.length >= 5) {
       return;
     } else {
@@ -64,33 +86,110 @@ function LocationInputList() {
       ]);
     }
   }
+  */
+
+  async function handleSubmit() {
+    usePathData({
+      status: "in-progress",
+      message: "Getting path details..."
+    })
+    try {
+      // Get token
+      const token = (await axios.post(`${process.env.NEXT_PUBLIC_MOCK_API}/route`, {
+        origin: locations[0].location,
+        destination: locations[locations.length - 1].location,
+      })).data;
+
+      // Get route
+      let retry = true, res;
+      while (retry) {
+        res = (await axios.get(`${process.env.NEXT_PUBLIC_MOCK_API}/route/${token}`)).data;
+        if (res.status === "in progress") {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        } else{
+          retry = false;
+        }
+      }
+
+      // handle response
+      if (res.status === "success") {
+        usePathData({
+          status: "success",
+          message: "Path Details",
+          totalDistance: res.total_distance,
+          totalTime: res.total_time
+        });
+      } else if (res.status === "failure") {
+        usePathData({
+          status: "error",
+          message: res.error
+        });
+      } else {
+        usePathData({
+          status: "error",
+          message: "There is an error when retrieving the route. Please re-submit."
+        });
+      }
+    } catch (e) {
+      usePathData({
+        status: "error",
+        message: "There is an error when retrieving the route. Please re-submit."
+      });
+    }
+  }
+
+  function handleClear() {
+    useLocations([
+      {
+        index: 0,
+        location: ""
+      },
+      {
+        index: 1,
+        location: ""
+      }
+    ]);
+    usePathData({
+      status: "none",
+      message: "Sumbit your pick up and drop off locations"
+    });
+  }
 
   return (
     <div>
-      {locations.map((item, i, arr) => {
-        const label = `Location ${i + 1}${
-          i === 0 ? " (Pick Up)" : i === arr.length - 1 ? " (Drop Off)" : ""
-        }`;
-        return (
-          <LocationInput
-            key={i}
-            name="location"
-            label={label}
-            value={item.location}
-            deletable={arr.length > 2}
-            onInputChange={(input: React.ChangeEvent<HTMLInputElement>) =>
-              handleLocationChange({index: i}, {input})
-            }
-            onLocationDelete={() => handleLocationDelete({index: i})}
-          ></LocationInput>
-        );
-      })}
-      <ActionButton
-        onClick={handleAddLocation}
-        label="Add Location"
-        disabled={!newLocationAddable}
-        className="mt-4"
-      />
+      <div>
+        {locations.map((item, i, arr) => {
+          const label = `Location ${i + 1}${
+            i === 0 ? " (Pick Up)" : i === arr.length - 1 ? " (Drop Off)" : ""
+          }`;
+          return (
+            <LocationInput
+              key={i}
+              name="location"
+              label={label}
+              value={item.location}
+              deletable={item.location !== ""}
+              onInputChange={(input: React.ChangeEvent<HTMLInputElement>) =>
+                handleLocationChange(i, input)
+              }
+              onLocationDelete={() => handleLocationDelete(i)}
+            ></LocationInput>
+          );
+        })}
+        
+        {/* TODO: remove if no use
+          <ActionButton
+          onClick={handleLocationAdd}
+          label="Add Location"
+          disabled={!newLocationAddable}
+          className="mt-4"
+        /> */}
+      </div>
+      <ResultContainer {...pathData} />
+      <div className="">
+        <ActionButton onClick={handleSubmit} label={`${pathData.status === "error" ? "Re-" : "" }Submit`} disabled={!locationCanSubmit} />
+        <ActionButton onClick={handleClear} label="Clear" disabled={locations.every((item) => item.location.trim() === "")} />
+      </div>
     </div>
   );
 }
@@ -98,7 +197,7 @@ function LocationInputList() {
 export default function Home() {
   return (
     <div>
-      <LocationInputList />
+      <LocationInputForm />
     </div>
   );
 }
