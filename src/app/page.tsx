@@ -5,6 +5,7 @@ import axios from "axios";
 import LocationInput from "./components/LocationInput";
 import ActionButton from "./components/ActionButton";
 import ResultContainer from "./components/ResultContainer";
+import MapContainer from "./components/MapContainer";
 
 export interface IPathDetails {
   status: "none" | "in-progress" | "success" |  "error";
@@ -14,7 +15,7 @@ export interface IPathDetails {
   totalTime?: number;
 }
 
-function LocationInputForm() {
+export default function Home() {
   interface locationItem {
     index: number;
     location: string;
@@ -117,7 +118,8 @@ function LocationInputForm() {
           status: "success",
           message: "Path Details",
           totalDistance: res.total_distance,
-          totalTime: res.total_time
+          totalTime: res.total_time,
+          path: res.path
         });
       } else if (res.status === "failure") {
         usePathData({
@@ -156,48 +158,44 @@ function LocationInputForm() {
   }
 
   return (
-    <div>
-      <div>
-        {locations.map((item, i, arr) => {
-          const label = `Location ${i + 1}${
-            i === 0 ? " (Pick Up)" : i === arr.length - 1 ? " (Drop Off)" : ""
-          }`;
-          return (
-            <LocationInput
-              key={i}
-              name="location"
-              label={label}
-              value={item.location}
-              deletable={item.location !== ""}
-              onInputChange={(input: React.ChangeEvent<HTMLInputElement>) =>
-                handleLocationChange(i, input)
-              }
-              onLocationDelete={() => handleLocationDelete(i)}
-            ></LocationInput>
-          );
-        })}
-        
-        {/* TODO: remove if no use
-          <ActionButton
-          onClick={handleLocationAdd}
-          label="Add Location"
-          disabled={!newLocationAddable}
-          className="mt-4"
-        /> */}
+    <div className="p-4 grid grid-flow-col laptop:grid-flow-row gap-4">
+      <div className="laptop:col-span-1">
+        <div className="">
+          {locations.map((item, i, arr) => {
+            const label = `Location ${i + 1}${
+              i === 0 ? " (Pick Up)" : i === arr.length - 1 ? " (Drop Off)" : ""
+            }`;
+            return (
+              <LocationInput
+                key={i}
+                name="location"
+                label={label}
+                value={item.location}
+                deletable={item.location !== ""}
+                onInputChange={(input: React.ChangeEvent<HTMLInputElement>) =>
+                  handleLocationChange(i, input)
+                }
+                onLocationDelete={() => handleLocationDelete(i)}
+              ></LocationInput>
+            );
+          })}
+          
+          {/* TODO: remove if no use
+            <ActionButton
+            onClick={handleLocationAdd}
+            label="Add Location"
+            disabled={!newLocationAddable}
+            className="mt-4"
+          /> */}
+        </div>
+        <ResultContainer pathDetails={pathData} className=""/>
+        <div className="grid grid-cols-2 gap-4 mt-4 ">
+          <ActionButton onClick={handleSubmit} label={`${pathData.status === "error" ? "Re-" : "" }Submit`} disabled={!locationCanSubmit} />
+          <ActionButton onClick={handleClear} label="Clear" disabled={locations.every((item) => item.location.trim() === "")} />
+        </div>
       </div>
-      <ResultContainer {...pathData} />
-      <div className="">
-        <ActionButton onClick={handleSubmit} label={`${pathData.status === "error" ? "Re-" : "" }Submit`} disabled={!locationCanSubmit} />
-        <ActionButton onClick={handleClear} label="Clear" disabled={locations.every((item) => item.location.trim() === "")} />
-      </div>
-    </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <div>
-      <LocationInputForm />
+      {/* TODO: fix map width & height */}
+      <MapContainer path={pathData.path} />
     </div>
   );
 }
