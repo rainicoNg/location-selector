@@ -5,6 +5,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #D9BFB0;
+  --disabled: #ccc;
+  --dark: #333;
+}
+
+button {
+	padding: 2px 8px;
+	border: 0px;
+	border-radius: 4px;
 }
 
 @media (prefers-color-scheme: dark) {
