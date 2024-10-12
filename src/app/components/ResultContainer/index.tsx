@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Icon from "@/app/components/Icon";
-import { IPathDetails } from "@/app/page";
+import { PathDetails } from "@/app/page";
 
 interface ResultContainerProps {
-  pathDetails: IPathDetails;
+  pathDetails: PathDetails;
   className?: string;
 }
 

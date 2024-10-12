@@ -1,8 +1,8 @@
 import LocationInput from "@/app/components/LocationInput";
-import { locationItem } from "@/app/reducer/useLocations";
+import { LocationItem } from "@/app/reducer/useLocations";
 
 interface LocationInputListProps {
-  locations: locationItem[];
+  locations: LocationItem[];
   handleLocationChange: (
     index: number,
     input: React.ChangeEvent<HTMLInputElement>
