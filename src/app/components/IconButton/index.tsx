@@ -13,7 +13,7 @@ export default function IconButton({...props}: IIconButtonProps) {
     <button
       onClick={props.onClick}
       disabled={props.disabled}
-      className={`text-primary rounded-full bg-transparent disabled:text-disabled ${props.className}`}
+      className={`${props.className} text-dark rounded-full bg-transparent disabled:text-disabled`}
     >
       <Icon type={props.icon} />
     </button>
