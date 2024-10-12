@@ -37,7 +37,7 @@ export default function ResultContainer({ ...props }: ResultContainerProps) {
       <p>
         {props.pathDetails.message}
         {props.pathDetails.status === "in-progress" && (
-          <Icon type={faSpinner} spin />
+          <Icon type={faSpinner} className="ml-2" spin />
         )}
       </p>
       {props.pathDetails.totalDistance && (
