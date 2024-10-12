@@ -1,11 +1,11 @@
-interface IActionButtonProps {
+interface ActionButtonProps {
   onClick: () => void;
   label: string;
   disabled: boolean;
   className?: string;
 }
 
-export default function ActionButton({...props}: IActionButtonProps) {
+export default function ActionButton({ ...props }: ActionButtonProps) {
   return (
     <button
       onClick={props.onClick}

@@ -1,19 +1,19 @@
-import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
-import Icon from "../Icon";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import Icon from "@/app/components/Icon";
 
-interface IIconButtonProps {
+interface IconButtonProps {
   onClick: () => void;
   icon: IconDefinition;
   disabled: boolean;
   className?: string;
 }
 
-export default function IconButton({...props}: IIconButtonProps) {
+export default function IconButton({ ...props }: IconButtonProps) {
   return (
     <button
       onClick={props.onClick}
       disabled={props.disabled}
-      className={`${props.className} text-dark rounded-full bg-transparent disabled:text-disabled`}
+      className={`bg-transparent text-dark rounded-full disabled:text-disabled ${props.className}`}
     >
       <Icon type={props.icon} />
     </button>
