@@ -8,6 +8,8 @@
   --primary: #D9BFB0;
   --disabled: #ccc;
   --dark: #333;
+  --positive: #166534;
+  --negative: #f87171;
 }
 
 button {
@@ -23,10 +25,24 @@ button {
   }
 }
 
+html {
+  height: 100%;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  height: 100%;
+}
+
+.status-success {
+  color: var(--positive);
+}
+
+.status-error {
+  color: var(--negative);
 }
 
 @layer utilities {

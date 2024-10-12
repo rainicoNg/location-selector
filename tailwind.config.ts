@@ -13,7 +13,9 @@ const config: Config = {
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         dark: "var(--dark)",
-        disabled: "var(--disabled)"
+        disabled: "var(--disabled)",
+        positive: "var(--positive)",
+        negative: "var(--negative)"
       }
     },
     screens: {
