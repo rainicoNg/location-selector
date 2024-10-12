@@ -108,9 +108,10 @@ export default function Home() {
         <div className="flex flex-col  col-span-0 max-laptop:mb-4 laptop:col-span-1">
           <LocationInputList
             locations={locations}
-            className="mb-8"
             handleLocationChange={handleLocationChange}
             handleLocationDelete={handleLocationDelete}
+            disabled={pathData.status === "in-progress"}
+            className="mb-8"
           />
           <ResultContainer
             pathDetails={pathData}

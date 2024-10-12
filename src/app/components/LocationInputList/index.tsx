@@ -8,6 +8,7 @@ interface LocationInputListProps {
     input: React.ChangeEvent<HTMLInputElement>
   ) => void;
   handleLocationDelete: (index: number) => void;
+  disabled: boolean;
   className?: string;
 }
 
@@ -24,6 +25,7 @@ export default function LocationInputList({ ...props }: LocationInputListProps) 
             name={`location_${i}`}
             label={label}
             value={item.location}
+            disabled={props.disabled}
             deletable={item.location !== ""}
             onInputChange={(input: React.ChangeEvent<HTMLInputElement>) =>
               props.handleLocationChange(i, input)
