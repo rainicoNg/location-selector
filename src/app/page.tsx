@@ -92,6 +92,7 @@ export default function Home() {
         message:
           "There is an error when retrieving the route. Please re-submit."
       });
+      console.error("Error when getting route", e);
     }
   }
 
