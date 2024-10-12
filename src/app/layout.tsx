@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { config, library } from "@fortawesome/fontawesome-svg-core";
-import { fas, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { fas, faTrash, faLocationPin } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 const geistSans = localFont({
@@ -18,7 +18,7 @@ const geistMono = localFont({
 });
 
 config.autoAddCss = false;
-library.add(fas, faTrash);
+library.add(fas, faTrash, faLocationPin);
 
 export const metadata: Metadata = {
   title: "Location Selector",

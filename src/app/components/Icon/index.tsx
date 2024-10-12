@@ -1,6 +1,11 @@
-import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import {IconDefinition, SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export default function Icon({type}: {type: IconDefinition}) {
-  return <FontAwesomeIcon icon={type} />;
+interface IIconProps {
+  type: IconDefinition;
+  size?: SizeProp;
+  className?: string
+}
+export default function Icon({...props}: IIconProps) {
+  return <FontAwesomeIcon icon={props.type} size={props.size || "sm"} className={props.className}/>;
 }
