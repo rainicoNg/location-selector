@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { config, library } from "@fortawesome/fontawesome-svg-core";
-import { fas, faTrash, faLocationPin } from "@fortawesome/free-solid-svg-icons";
+import { fas, faTrash, faLocationPin, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 const geistSans = localFont({
@@ -18,7 +18,7 @@ const geistMono = localFont({
 });
 
 config.autoAddCss = false;
-library.add(fas, faTrash, faLocationPin);
+library.add(fas, faTrash, faLocationPin, faSpinner);
 
 export const metadata: Metadata = {
   title: "Location Selector",
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto m-4`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto py-4`}
       >
         {children}
       </body>
