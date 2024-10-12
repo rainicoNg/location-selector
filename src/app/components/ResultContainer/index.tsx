@@ -31,8 +31,7 @@ export default function ResultContainer({...props}: IResultContainerProps) {
   return (
     <div className={props.className}>
       <h3 className={`status-${props.pathDetails.status} text-xl font-bold`}>{header}</h3>
-      <p>{props.pathDetails.message}</p>
-      {props.pathDetails.status === "in-progress" && <Icon type={faSpinner} spin />}
+      <p>{props.pathDetails.message}{props.pathDetails.status === "in-progress" && <Icon type={faSpinner} spin />}</p>
       {props.pathDetails.totalDistance && <h5>Total Distance: {props.pathDetails.totalDistance}</h5>}
       {props.pathDetails.totalTime && <h5>Total Time: {props.pathDetails.totalTime}</h5>}
     </div>
