@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LocationPointer from "../LocationPointer";
 
 function Routes({wayPoints}: {wayPoints: google.maps.LatLngLiteral[]}) {
-  const map = useMap(process.env.NEXT_PUBLIC_GOOGLE_MAP_ID);
+  const map = useMap();
   const routeLib = useMapsLibrary("routes");
   const [dirService, useDirService] = useState<google.maps.DirectionsService>();
   const [dirRenderer, useDirRenderer] = useState<google.maps.DirectionsRenderer>();
@@ -16,7 +16,6 @@ function Routes({wayPoints}: {wayPoints: google.maps.LatLngLiteral[]}) {
 
   useEffect(() => {
     if (!dirService || !dirRenderer) return;
-
     if (wayPoints && wayPoints.length > 2) {
       // set map if not set
       if (dirRenderer.getMap() === null && map){
