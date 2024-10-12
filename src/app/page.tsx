@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import axios from "axios";
 import LocationInput from "./components/LocationInput";
 import ActionButton from "./components/ActionButton";
@@ -31,32 +31,12 @@ export default function Home() {
       location: ""
     }
   ]);
-  /* TODO: remove if no use
-  const [newLocationAddable, useNewLocationAddable] = useState(false);
-  */
-  const [locationCanSubmit, useLocationCanSubmit] = useState(false);
   const [pathData, usePathData] = useState<IPathDetails>({
     status: "none",
-    message: "Sumbit your pick up and drop off locations"
+    message: "Sumbit your pick up and drop off locations to see the routes"
   });
 
-  useEffect(() => {
-    setLocationCanSubmit();
-  }, [locations, pathData.status]);
-
-  function setLocationCanSubmit() {
-    useLocationCanSubmit(locations.every((item) => item.location.trim() !== "") && pathData.status !== "in-progress");
-  }
-
-  /* TODO: remove if no use
-  function setNewLocationAddable() {
-    useNewLocationAddable(
-      locations.length < 5 &&
-        locations.every((item) => item.location.trim() !== "")
-    );
-  }
-  */
-
+  // Location Input events
   function handleLocationChange(
     index: number,
     input: React.ChangeEvent<HTMLInputElement>
@@ -72,28 +52,12 @@ export default function Home() {
     useLocations(updatedLocations);
   }
 
-  /* TODO: remove if no use
-  function handleLocationAdd() {
-    if (locations.length >= 5) {
-      return;
-    } else {
-      useNewLocationAddable(false);
-      useLocations([
-        ...locations,
-        {
-          index: locations.length,
-          location: ""
-        }
-      ]);
-    }
-  }
-  */
-
+  // handle action
   async function handleSubmit() {
     usePathData({
       status: "in-progress",
-      message: "Getting path details..."
-    })
+      message: "Getting path details"
+    });
     try {
       // Get token
       const token = (await axios.post(`${process.env.NEXT_PUBLIC_MOCK_API}/route`, {
@@ -158,44 +122,42 @@ export default function Home() {
   }
 
   return (
-    <div className="p-4 grid grid-flow-col laptop:grid-flow-row gap-4">
-      <div className="laptop:col-span-1">
-        <div className="">
-          {locations.map((item, i, arr) => {
-            const label = `Location ${i + 1}${
-              i === 0 ? " (Pick Up)" : i === arr.length - 1 ? " (Drop Off)" : ""
-            }`;
-            return (
-              <LocationInput
-                key={i}
-                name="location"
-                label={label}
-                value={item.location}
-                deletable={item.location !== ""}
-                onInputChange={(input: React.ChangeEvent<HTMLInputElement>) =>
-                  handleLocationChange(i, input)
-                }
-                onLocationDelete={() => handleLocationDelete(i)}
-              ></LocationInput>
-            );
-          })}
-          
-          {/* TODO: remove if no use
-            <ActionButton
-            onClick={handleLocationAdd}
-            label="Add Location"
-            disabled={!newLocationAddable}
-            className="mt-4"
-          /> */}
+    <div className="flex flex-col h-[95%] mx-4">
+      <h2 className="text-2xl font-bold mb-2">Location Selector</h2>
+      <div className="grow laptop:grid laptop:grid-cols-4 laptop:gap-8">
+        <div className="flex flex-col max-laptop:mb-4 laptop:col-span-1 col-span-0">
+          <div className="mb-8">
+            {locations.map((item, i, arr) => {
+              const label = `Location ${i + 1}${
+                i === 0 ? " (Pick Up)" : i === arr.length - 1 ? " (Drop Off)" : ""
+              }`;
+              return (
+                <LocationInput
+                  key={i}
+                  name="location"
+                  label={label}
+                  value={item.location}
+                  deletable={item.location !== ""}
+                  onInputChange={(input: React.ChangeEvent<HTMLInputElement>) =>
+                    handleLocationChange(i, input)
+                  }
+                  onLocationDelete={() => handleLocationDelete(i)}
+                  className={`${i !== arr.length - 1 ? "mb-2" : ""}`} 
+                ></LocationInput>
+              );
+            })}
+          </div>
+          <ResultContainer pathDetails={pathData} className="mb-4"/>
+          <div className="flex justify-between">
+            <ActionButton onClick={handleSubmit} label={`${pathData.status === "error" ? "Re-" : "" }Submit`} disabled={locations.some((item) => item.location.trim() === "") || pathData.status === "in-progress"} />
+            <ActionButton onClick={handleClear} label="Clear" disabled={locations.every((item) => item.location.trim() === "") || pathData.status === "in-progress"} />
+          </div>
         </div>
-        <ResultContainer pathDetails={pathData} className=""/>
-        <div className="grid grid-cols-2 gap-4 mt-4 ">
-          <ActionButton onClick={handleSubmit} label={`${pathData.status === "error" ? "Re-" : "" }Submit`} disabled={!locationCanSubmit} />
-          <ActionButton onClick={handleClear} label="Clear" disabled={locations.every((item) => item.location.trim() === "")} />
+        <div className="laptop:col-span-3 flex flex-col h-3/5 laptop:h-full">
+          <h3 className="font-semibold">Routes</h3>
+          <MapContainer path={pathData.path} className="grow" />
         </div>
       </div>
-      {/* TODO: fix map width & height */}
-      <MapContainer path={pathData.path} />
     </div>
   );
 }
