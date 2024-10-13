@@ -5,7 +5,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #D9BFB0;
+  --primary: #EBCEBE;
+  --primary-hover:  #D9BFB0;
   --disabled: #ccc;
   --dark: #333;
   --positive: #166534;
@@ -16,6 +17,19 @@ button {
 	padding: 2px 8px;
 	border: 0px;
 	border-radius: 4px;
+  cursor: pointer;
+}
+
+button>label {
+  cursor: pointer;
+}
+
+button:hover {
+  transition: 0.3s;
+}
+
+button.action-button:hover {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 @media (prefers-color-scheme: dark) {

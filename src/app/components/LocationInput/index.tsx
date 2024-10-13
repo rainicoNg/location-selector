@@ -21,7 +21,7 @@ export default function LocationInput({ ...props }: LocationInputProps) {
           onClick={props.onLocationDelete}
           icon={faTrash}
           disabled={!props.deletable || props.disabled}
-          className="absolute inset-y-0 right-0 text-negative"
+          className="absolute inset-y-0 right-0 text-negative hover:text-red-600"
         />
         <input
           type="text"
@@ -29,7 +29,7 @@ export default function LocationInput({ ...props }: LocationInputProps) {
           value={props.value || ""}
           disabled={props.disabled}
           onChange={props.onInputChange}
-          className="border border-gray-400 rounded py-1 pl-2 pr-6 grow"
+          className="border border-gray-400 rounded py-1 pl-2 pr-6 grow dark:text-background"
         />
       </div>
     </div>

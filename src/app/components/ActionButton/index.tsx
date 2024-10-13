@@ -10,7 +10,7 @@ export default function ActionButton({ ...props }: ActionButtonProps) {
     <button
       onClick={props.onClick}
       disabled={props.disabled}
-      className={`action-button bg-primary text-dark disabled:bg-disabled ${props.className}`}
+      className={`action-button bg-primary text-dark disabled:bg-disabled hover:bg-primary-hover ${props.className}`}
     >
       <label>{props.label}</label>
     </button>
