@@ -21,9 +21,9 @@ function Routes({ wayPoints }: { wayPoints: google.maps.LatLngLiteral[] }) {
   }, [routeLib, map]);
 
   useEffect(() => {
-    if (libLoaded && routeLib && map) {
-      const service = new routeLib.DirectionsService();
-      const renderer = new routeLib.DirectionsRenderer({ map, suppressMarkers: true });
+    if (libLoaded) {
+      const service = new routeLib!.DirectionsService();
+      const renderer = new routeLib!.DirectionsRenderer({ map, suppressMarkers: true });
       setDirService(service);
       setDirRenderer(renderer);
     }

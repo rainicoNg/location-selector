@@ -5,11 +5,11 @@ export function AdvancedMarker({ position, ...props }: { position : { lat: numbe
 }
 
 
-export function Map({ children, ...props }: { children: React.ReactNode }) {
+export function Map({ children }: { children: React.ReactNode }) {
   return <div data-testid="map">{children}</div>
 }
 
-export function APIProvider({ children, ...props }: { children: React.ReactNode }) {
+export function APIProvider({ children }: { children: React.ReactNode }) {
   return <div data-testid="api-provider">{children}</div>
 }
 
