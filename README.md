@@ -9,7 +9,7 @@ This web app is compatible with latest Chrome, Safari and FireFox
 
 ### Instruction
 
-1. enter the website (or run `npm run dev` on local, create `.env.local` on root folder with the env stated below)
+1. enter the website (or run `npm run dev` for local run, create `.env.local` on root folder with the env stated below)
 2. Type a pick up location (no auto-complete)
 3. Type a drop off location (no auto-complete)
 4. Click Submit button
@@ -27,5 +27,5 @@ This web app is compatible with latest Chrome, Safari and FireFox
 ### env list
 
 - `NEXT_PUBLIC_MOCK_API`: the api endpoint for getting a token and route response
-- `NEXT_PUBLIC_GOOGLE_MAP_API_KEY`: the api key of google maps api, you can get it from Google Map Platdorm > API and Services
-- `NEXT_PUBLIC_GOOGLE_MAP_ID`: a google maps Map ID, you can get it from Google Map Platdorm > Map Management
+- `NEXT_PUBLIC_GOOGLE_MAP_API_KEY`: the api key of google maps api, you can get it from Google Map Platform > API and Services
+- `NEXT_PUBLIC_GOOGLE_MAP_ID`: a google maps Map ID, you can get it from Google Map Platform > Map Management
