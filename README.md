@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Description
 
-## Getting Started
+This is a web application for getting a driving route by submitting 1 pick up location and 1 drop off location, the route will be shown on the map.
+This web app is compatible with latest Chrome, Safari and FireFox
 
-First, run the development server:
+### Deployed website
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[https://deploy.d37c3lm37ecftk.amplifyapp.com/](https://deploy.d37c3lm37ecftk.amplifyapp.com/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Instruction
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. enter the website (or run `npm run dev` on local, create `.env.local` on root folder with the env stated below)
+2. Type a pick up location (no auto-complete)
+3. Type a drop off location (no auto-complete)
+4. Click Submit button
+5. Wait for the result
+6. If the result is success, the returned driving route with location markers will be displayed on the right (laptop) or below (mobile)
+7. If the result is failed, you can click Re-Submit button to trigger submission again, or Clear to clean all inputs
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Create a production build
 
-## Learn More
+1. run `npm i`
+2. run `npm run build`
+3. get the build files in `out` folder
+4. add the env (refer to the following) on your site, or in `.env` if you run locally
 
-To learn more about Next.js, take a look at the following resources:
+### env list
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `NEXT_PUBLIC_MOCK_API`: the api endpoint for getting a token and route response
+- `NEXT_PUBLIC_GOOGLE_MAP_API_KEY`: the api key of google maps api, you can get it from Google Map Platdorm > API and Services
+- `NEXT_PUBLIC_GOOGLE_MAP_ID`: a google maps Map ID, you can get it from Google Map Platdorm > Map Management
