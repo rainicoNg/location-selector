@@ -14,9 +14,9 @@ interface LocationInputProps {
 
 export default function LocationInput({ ...props }: LocationInputProps) {  
   return (
-    <div className={props.className}>
+    <div className={`location-input ${props.className}`}>
       <label className="font-semibold">{props.label}</label>
-      <div className="relative w-full flex">
+      <div className="relative w-full flex" data-testid={`LocationInput-${props.name}`}>
         <IconButton
           onClick={props.onLocationDelete}
           icon={faTrash}

@@ -125,6 +125,7 @@ export default function Home() {
                 pathData.status === "in-progress"
               }
               onClick={handleSubmit}
+              className="submit"
             />
             <ActionButton
               label="Clear"
@@ -133,6 +134,7 @@ export default function Home() {
                 pathData.status === "in-progress"
               }
               onClick={handleClear}
+              className="clear"
             />
           </div>
         </div>

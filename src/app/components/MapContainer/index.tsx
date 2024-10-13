@@ -13,19 +13,21 @@ function Routes({ wayPoints }: { wayPoints: google.maps.LatLngLiteral[] }) {
   const [dirService, setDirService] = useState<google.maps.DirectionsService>();
   const [dirRenderer, setDirRenderer] =
     useState<google.maps.DirectionsRenderer>();
+  const [libLoaded, setLibLoaded] = useState(false);
 
   useEffect(() => {
     if (!routeLib || !map) return;
-
-    const service = new routeLib.DirectionsService();
-    const renderer = new routeLib.DirectionsRenderer({ map, suppressMarkers: true });
-    setDirService(service);
-    setDirRenderer(renderer);
-
-    return () => {
-      renderer.setMap(null);
-    };
+    setLibLoaded(true);
   }, [routeLib, map]);
+
+  useEffect(() => {
+    if (libLoaded) {
+      const service = new routeLib!.DirectionsService();
+      const renderer = new routeLib!.DirectionsRenderer({ map, suppressMarkers: true });
+      setDirService(service);
+      setDirRenderer(renderer);
+    }
+  }, [libLoaded])
 
   useEffect(() => {
     if (!dirService || !dirRenderer) return;
@@ -54,7 +56,7 @@ function Routes({ wayPoints }: { wayPoints: google.maps.LatLngLiteral[] }) {
       dirRenderer.setMap(null);
     }
   }, [wayPoints, dirService, dirRenderer, map]);
-  return <div id="mapRout" />;
+  return null;
 }
 
 interface MapContainerProps {
@@ -81,7 +83,7 @@ export default function MapContainer({ ...props }: MapContainerProps) {
   }, [props.path]);
 
   return (
-    <div className={props.className}>
+    <div className={`map-container ${props.className}`}>
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!}>
         <Map
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID}
